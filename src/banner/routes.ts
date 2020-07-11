@@ -1,6 +1,6 @@
 import { Manager } from "./manager";
 import { JsonBannerRepo, BannerRepo } from '../repository/banner';
-import {Request, Response, Application} from 'express';
+import { Request, Response, Application } from 'express';
 
 class AllRoutes {
     constructor(private sourceDataType: string, private sourceDataName: string) {
@@ -42,6 +42,9 @@ class AllRoutes {
                 "code": 500,
             })
         });
+        app.delete('/banner', (req: Request, resp: Response) => {
+
+        })
     }
 }
 

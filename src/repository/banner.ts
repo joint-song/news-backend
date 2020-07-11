@@ -1,4 +1,5 @@
 import { Banner } from '../model/banner';
+import { AddBannerParams } from '../dto/banner';
 import fs from 'fs';
 import path from 'path';
 
@@ -6,6 +7,7 @@ interface BannerRepo {
     list: () => Banner[];
     addBanner: (b: Banner) => Error | undefined;
 }
+
 
 class JsonBannerRepo implements BannerRepo {
     private data: Banner[];
@@ -24,7 +26,7 @@ class JsonBannerRepo implements BannerRepo {
         return this.data;
     }
 
-    public addBanner(b: Banner): Error | undefined {
+    public addBanner(b: AddBannerParams): Error | undefined {
         try {
             if (!fs.existsSync(this.sourceDataDir)) {
                 fs.mkdirSync(this.sourceDataDir, { recursive: true });
