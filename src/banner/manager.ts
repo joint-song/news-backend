@@ -7,24 +7,27 @@ class Manager {
     public allBanners(): Banner[] {
         return this.bannerRepo.list();
     }
-    public addBanner(picLink: string, module: string, targetLink: string): Error | undefined {
+    public addBanner(picLink: string, module: string, targetLink: string): number {
         if (!targetLink) {
-            return Error('must provide an valid target link');
+            throw Error('must provide an valid target link');
         }
         if (!picLink) {
-            return Error('must provide picture link');
+            throw Error('must provide picture link');
         }
         if (!module) {
-            return Error('most provide module');
+            throw Error('most provide module');
         }
         if (!Manager.supportedModules.includes(module)) {
-            return Error('unsupported module '+module);
+            throw Error('unsupported module '+module);
         }
         return this.bannerRepo.addBanner({
             picAddress: picLink,
             module,
             redirectPostKey: targetLink,
         });
+    }
+    public deleteBanner(id: number) {
+        this.bannerRepo.deleteBanner(id);
     }
 }
 

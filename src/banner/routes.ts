@@ -28,22 +28,36 @@ class AllRoutes {
             });
         });
         app.post('/banner', (req: Request, resp: Response) => {
-            const err = m.addBanner(req.query['pic_address'] as string, req.query['module'] as string, req.query['target_address'] as string);
-            if (!err) {
+            let id = 0;
+            try {
+                id = m.addBanner(req.query['pic_address'] as string, req.query['module'] as string, req.query['target_address'] as string);
+            } catch (error) {
                 resp.status(200).json({
-                    "error": null,
-                    "code": 200,
-                    "data": "success",
-                });
-                return
+                    "error": error.message,
+                    "code": 500,
+                })
+                return;
             }
             resp.status(200).json({
-                "error": err.message,
-                "code": 500,
-            })
+                "error": null,
+                "code": 200,
+                "data": id,
+            });
         });
         app.delete('/banner', (req: Request, resp: Response) => {
-
+            const idString = req.query.id as string || '';
+            const id = parseInt(idString);
+            if (id <= 0) {
+                resp.status(404).json({
+                    "error": "非法的id参数",
+                    "code": 404,
+                });
+                return;
+            }
+            m.deleteBanner(id);
+            resp.status(200).json({
+                "code": 200,
+            });
         })
     }
 }

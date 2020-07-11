@@ -2,13 +2,18 @@ import express from 'express';
 import { AllRoutes } from './banner/routes';
 import env from './env/env';
 import cors from 'cors';
+import morgan from 'morgan';
 
 // Create a new express app instance
 const app = express();
-app.use(cors({
-    origin: '*',
-    optionsSuccessStatus: 200,
-}));
+app.use(
+    cors({
+        origin: '*',
+        optionsSuccessStatus: 200,
+    }),
+    morgan('combined'),
+    express.static('static'),
+);
 
 app.get('/status', function (req, res) {
     res.status(200).json({
@@ -27,7 +32,7 @@ app.get('/status', function (req, res) {
     new AllRoutes(env.storageType, env.sourceDataName).registerRoutes(app);
 })();
 
-// app.settings
-app.listen(3000, function () {
-    console.log('App is listening on port 3000!');
+const port = 3000;
+app.listen(port, function () {
+    console.log('News-backend is listening on port %d!', port);
 });
