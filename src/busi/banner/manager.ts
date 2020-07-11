@@ -1,8 +1,8 @@
-import { BannerRepo } from '../repository/banner';
-import { Banner } from '../model/banner';
+import { BannerRepo } from '../../repository/banner';
+import { Banner } from '../../model/banner';
 
 class Manager {
-    static supportedModules = ['raw_link'];
+    static supportedModules = ['raw_link', 'post'];
     constructor(private bannerRepo: BannerRepo) { }
     public allBanners(): Banner[] {
         return this.bannerRepo.list();

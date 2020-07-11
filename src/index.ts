@@ -1,5 +1,6 @@
 import express from 'express';
-import { AllRoutes } from './banner/routes';
+import { BannerRoutes } from './busi/banner/routes';
+import { PostRoutes } from './busi/post/routes';
 import env from './env/env';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -29,7 +30,8 @@ app.get('/status', function (req, res) {
     if (env.storageType === undefined) {
         throw Error('provide SOURCE_DATA_TYPE env');
     }
-    new AllRoutes(env.storageType, env.sourceDataName).registerRoutes(app);
+    new BannerRoutes(env.storageType, env.sourceDataName).registerRoutes(app);
+    new PostRoutes(env.storageType, env.sourceDataName).registerRoutes(app);
 })();
 
 const port = 3000;

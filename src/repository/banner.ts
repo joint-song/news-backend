@@ -1,7 +1,6 @@
 import { Banner } from '../model/banner';
 import { AddBannerParams } from '../dto/banner';
-import fs from 'fs';
-import path from 'path';
+import { JsonRepo } from './json_repo';
 
 interface BannerRepo {
     list: () => Banner[];
@@ -16,18 +15,11 @@ type JsonData = {
     banners: Banner[],
 }
 
-class JsonBannerRepo implements BannerRepo {
+class JsonBannerRepo extends JsonRepo implements BannerRepo {
     private data: JsonData;
-    private filename: string;
-
     constructor(private sourceDataDir: string) {
-        this.filename = path.join(sourceDataDir, "newsdata.json");
-        let rawData: string | undefined;
-        if (fs.existsSync(this.filename)) {
-            rawData = fs.readFileSync(this.filename).toString('utf-8');
-        }
-
-        rawData = rawData || '{"meta": {"nextId": 1}, "banners": []}';
+        super(sourceDataDir, "banners.data.json");
+        const rawData = super.readJSONFile() || '{"meta": {"nextId": 1}, "banners": []}';
         this.data = JSON.parse(rawData);
     }
 
@@ -43,7 +35,7 @@ class JsonBannerRepo implements BannerRepo {
             module: b.module,
             redirectPostKey: b.redirectPostKey,
         });
-        this.writeData();
+        super.writeFile(JSON.stringify(this.data));
         return newId;
     }
 
@@ -53,24 +45,13 @@ class JsonBannerRepo implements BannerRepo {
             return;
         }
         this.data.banners = this.data.banners.filter(v => v.id !== id);
-        this.writeData();
+        super.writeFile(JSON.stringify(this.data));
     }
 
     private newId(): number {
         const k = this.data.meta.nextId;
         this.data.meta.nextId++;
         return k;
-    }
-
-    private writeData() {
-        try {
-            if (!fs.existsSync(this.sourceDataDir)) {
-                fs.mkdirSync(this.sourceDataDir, { recursive: true });
-            }
-            fs.writeFileSync(this.filename, JSON.stringify(this.data));
-        } catch (error) {
-            return error;
-        }
     }
 }
 

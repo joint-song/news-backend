@@ -1,8 +1,8 @@
 import { Manager } from "./manager";
-import { JsonBannerRepo, BannerRepo } from '../repository/banner';
+import { JsonBannerRepo, BannerRepo } from '../../repository/banner';
 import { Request, Response, Application } from 'express';
 
-class AllRoutes {
+class BannerRoutes {
     constructor(private sourceDataType: string, private sourceDataName: string) {
         if (!sourceDataType) {
             throw Error('must provide source data type');
@@ -30,7 +30,7 @@ class AllRoutes {
         app.post('/banner', (req: Request, resp: Response) => {
             let id = 0;
             try {
-                id = m.addBanner(req.query['pic_address'] as string, req.query['module'] as string, req.query['target_address'] as string);
+                id = m.addBanner(req.query['pic_address'] as string, req.query['module'] as string, req.query['target_key'] as string);
             } catch (error) {
                 resp.status(200).json({
                     "error": error.message,
@@ -63,5 +63,5 @@ class AllRoutes {
 }
 
 export {
-    AllRoutes,
+    BannerRoutes,
 };
