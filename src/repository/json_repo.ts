@@ -18,7 +18,7 @@ class JsonRepo {
             if (!fs.existsSync(this.dataDir)) {
                 fs.mkdirSync(this.dataDir, { recursive: true });
             }
-            fs.writeFileSync(this.filename, JSON.stringify(jsonString));
+            fs.writeFileSync(this.filename, jsonString);
         } catch (error) {
             return error;
         }
