@@ -9,7 +9,7 @@ $ npm install
 ```shell
 $ npm run start:dev
 ```
-### 构建上线
+### 构建
 ```shell
 $ npm run build
 $ npm run start
