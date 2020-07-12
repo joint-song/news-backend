@@ -1,9 +1,9 @@
 import { Post } from '../model/post';
-import { AddPostParams } from '../dto/post';
+import { AddPostParams, ListPostsResp } from '../dto/post';
 import { JsonRepo } from './json_repo';
 
 interface PostRepo {
-    list: (moduleKey: string, page: number, size: number) => Post[] | undefined;
+    list: (moduleKey: string, page: number, size: number) => ListPostsResp | undefined;
     createPost: (b: AddPostParams) => number;
     getPost: (id: number) => Post | undefined;
     deletePost: (id: number) => void;
@@ -24,7 +24,7 @@ class JsonPostRepo extends JsonRepo implements PostRepo {
         this.data = JSON.parse(rawData);
     }
 
-    public list(moduleKey: string, page: number, size: number): Post[] | undefined {
+    public list(moduleKey: string, page: number, size: number): ListPostsResp | undefined {
         if (page <= 0 || size <= 0) {
             return;
         }
@@ -39,11 +39,18 @@ class JsonPostRepo extends JsonRepo implements PostRepo {
         if (posts.length < to-1) {
             to = posts.length-1;
         }
-        const ret = [];
+        const ret: ListPostsResp = {
+            posts: [],
+            pagination: {
+                total: posts.length,
+                page,
+                size,
+            },
+        };
         for (let i = 0; i < posts.length; i++) {
             const p = posts[i];
             if (i >= from && i <= to) {
-                ret.push(p);
+                ret.posts.push(p);
             }
         }
         return ret;
