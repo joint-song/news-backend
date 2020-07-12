@@ -26,16 +26,23 @@ class PostRoutes {
             const page = parseInt(pageString);
             const sizeString = req.query.size as string;
             const size = parseInt(sizeString);
-            if (page <= 0) {
+            if (!page || page <= 0) {
                 resp.status(400).json({
                     "error": "非法的page",
                     "code": 400,
                 })
                 return;
             }
-            if (size < 0) {
+            if (!size || size < 0) {
                 resp.status(400).json({
                     "error": "非法的size",
+                    "code": 400,
+                })
+                return;
+            }
+            if (!module) {
+                resp.status(400).json({
+                    "error": "非法的module",
                     "code": 400,
                 })
                 return;
