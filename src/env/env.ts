@@ -4,12 +4,7 @@ const env = {
 };
 
 function evaluatedPath(s: string): string {
-    let replacePattern: RegExp;
-    if (['win32'].indexOf(process.platform) != -1) {
-        replacePattern = /%([^%]+)%/g;
-    } else {
-        replacePattern = /\$([^/]+)/g;
-    }
+    let replacePattern: RegExp = /\$([^/]+)/g;
     return s.replace(replacePattern, (_, n) => process.env[n] || '');
 }
 
