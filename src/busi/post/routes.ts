@@ -40,13 +40,6 @@ class PostRoutes {
                 })
                 return;
             }
-            if (!module) {
-                resp.status(400).json({
-                    "error": "非法的module",
-                    "code": 400,
-                })
-                return;
-            }
             resp.status(200).json({
                 "error": null,
                 "code": 200,

@@ -29,7 +29,10 @@ class JsonPostRepo extends JsonRepo implements PostRepo {
             return;
         }
         let from = (page-1)*size, to = page*size;
-        const posts = this.data.posts.filter(v => v.moduleKey === moduleKey);
+        let posts = this.data.posts;
+        if (moduleKey) {
+            posts = this.data.posts.filter(v => v.moduleKey === moduleKey);
+        }
         if (posts.length < from) {
             return;
         }
