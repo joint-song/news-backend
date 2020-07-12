@@ -14,6 +14,7 @@ app.use(
     }),
     morgan('combined'),
     express.static('static'),
+    express.json(),
 );
 
 app.get('/status', function (req, res) {

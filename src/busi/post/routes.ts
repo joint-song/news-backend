@@ -1,6 +1,7 @@
 import { Manager } from "./manager";
 import { JsonPostRepo, PostRepo } from '../../repository/post';
 import { Request, Response, Application } from 'express';
+import { AddPostParams } from "src/dto/post";
 
 class PostRoutes {
     constructor(private sourceDataType: string, private sourceDataName: string) {
@@ -49,8 +50,8 @@ class PostRoutes {
         app.post('/post', (req: Request, resp: Response) => {
             let id = 0;
             try {
-                const v = JSON.parse(req.body);
-                if (parseInt(v.authorId) <= 0) {
+                const v: AddPostParams = req.body;
+                if (v.authorId <= 0) {
                     throw Error('非法的用户id');
                 }
                 id = m.createPost(v);

@@ -28,7 +28,7 @@ class JsonPostRepo extends JsonRepo implements PostRepo {
         if (page <= 0 || size <= 0) {
             return;
         }
-        let from = (page-1)*size, to = page*size;
+        let from = (page - 1) * size, to = page * size;
         let posts = this.data.posts;
         if (moduleKey) {
             posts = this.data.posts.filter(v => v.moduleKey === moduleKey);
@@ -36,8 +36,8 @@ class JsonPostRepo extends JsonRepo implements PostRepo {
         if (posts.length < from) {
             return;
         }
-        if (posts.length < to-1) {
-            to = posts.length-1;
+        if (posts.length < to - 1) {
+            to = posts.length - 1;
         }
         const ret: ListPostsResp = {
             posts: [],
@@ -87,6 +87,7 @@ class JsonPostRepo extends JsonRepo implements PostRepo {
     }
 
     private newId(): number {
+        console.log(this.data.meta);
         const k = this.data.meta.nextId;
         this.data.meta.nextId++;
         return k;
