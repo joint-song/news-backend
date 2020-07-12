@@ -17,7 +17,7 @@ type JsonData = {
 
 class JsonBannerRepo extends JsonRepo implements BannerRepo {
     private data: JsonData;
-    constructor(private sourceDataDir: string) {
+    constructor(sourceDataDir: string) {
         super(sourceDataDir, "banners.data.json");
         const rawData = super.readJSONFile() || '{"meta": {"nextId": 1}, "banners": []}';
         this.data = JSON.parse(rawData);

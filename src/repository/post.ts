@@ -18,7 +18,7 @@ type JsonData = {
 
 class JsonPostRepo extends JsonRepo implements PostRepo {
     private data: JsonData;
-    constructor(private sourceDataDir: string) {
+    constructor(sourceDataDir: string) {
         super(sourceDataDir, "posts.data.json");
         const rawData = super.readJSONFile() || '{"meta": {"nextId": 1}, "posts": [], "indexes": []}';
         this.data = JSON.parse(rawData);
