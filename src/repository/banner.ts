@@ -1,39 +1,57 @@
 import { Banner } from '../model/banner';
-import fs from 'fs';
-import path from 'path';
+import { AddBannerParams } from '../dto/banner';
+import { JsonRepo } from './json_repo';
 
 interface BannerRepo {
     list: () => Banner[];
-    addBanner: (b: Banner) => Error | undefined;
+    addBanner: (b: AddBannerParams) => number;
+    deleteBanner: (id: number) => void;
 }
 
-class JsonBannerRepo implements BannerRepo {
-    private data: Banner[];
-    private filename: string;
+type JsonData = {
+    meta: {
+        nextId: number,
+    },
+    banners: Banner[],
+}
+
+class JsonBannerRepo extends JsonRepo implements BannerRepo {
+    private data: JsonData;
     constructor(private sourceDataDir: string) {
-        this.filename = path.join(sourceDataDir, "banner.json");
-        let rawData: string | undefined;
-        if (fs.existsSync(this.filename)) {
-            rawData = fs.readFileSync(this.filename).toString('utf-8');
-        }
-        rawData = rawData || '[]';
+        super(sourceDataDir, "banners.data.json");
+        const rawData = super.readJSONFile() || '{"meta": {"nextId": 1}, "banners": []}';
         this.data = JSON.parse(rawData);
     }
 
     public list(): Banner[] {
-        return this.data;
+        return this.data.banners;
     }
 
-    public addBanner(b: Banner): Error | undefined {
-        try {
-            if (!fs.existsSync(this.sourceDataDir)) {
-                fs.mkdirSync(this.sourceDataDir, { recursive: true });
-            }
-            fs.writeFileSync(this.filename, JSON.stringify([...this.data, b]));
-        } catch (error) {
-            return error;
+    public addBanner(b: AddBannerParams): number {
+        const newId = this.newId();
+        this.data.banners.push({
+            id: newId,
+            picAddress: b.picAddress,
+            module: b.module,
+            redirectPostKey: b.redirectPostKey,
+        });
+        super.writeFile(JSON.stringify(this.data));
+        return newId;
+    }
+
+    public deleteBanner(id: number) {
+        const b = this.data.banners.find(v => v.id === id);
+        if (!b) {
+            return;
         }
-        this.data.push(b);
+        this.data.banners = this.data.banners.filter(v => v.id !== id);
+        super.writeFile(JSON.stringify(this.data));
+    }
+
+    private newId(): number {
+        const k = this.data.meta.nextId;
+        this.data.meta.nextId++;
+        return k;
     }
 }
 
