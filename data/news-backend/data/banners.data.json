@@ -1,0 +1,10 @@
+{
+    "meta": {
+        "nextId": 4
+    },
+    "banners": [
+        {"id": 1, "picAddress": "http://localhost:3000/images/1594518772816_332.jpg", "module": "raw_link", "redirectPostKey": "https://tv.cctv.com/2020/07/12/VIDEzNVsOxHH7VBjtRY8ngOl200712.shtml?spm=C96370.PsikHJQ1ICOX.EKuioXvJBBSD.3"},
+        {"id": 2, "picAddress": "http://localhost:3000/images/1594518847675_453.jpg", "module": "post", "redirectPostKey": "1"},
+        {"id": 3, "picAddress": "http://localhost:3000/images/1594524886041_790.jpg", "module": "raw_link", "redirectPostKey": "http://news.cctv.com/2020/07/12/ARTIh9jhTEO0kqtLjcl056oh200712.shtml?spm=C94212.P4YnMod9m2uD.E7v7lEZZ0WEM.17"}
+    ]
+}
